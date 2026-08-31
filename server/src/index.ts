@@ -424,7 +424,25 @@ setInterval(() => {
   }
 }, 15_000);
 
-http.listen(PORT, () => {
+// Escutar explicitamente em 0.0.0.0 (todas as interfaces IPv4).
+// Sem o host, o Node pode acabar ouvindo só em IPv6 (::) em alguns
+// ambientes de hospedagem; o roteador do Render então não encontra a
+// instância e devolve 404 com `x-render-routing: no-server`.
+http.listen(PORT, '0.0.0.0', () => {
   console.log(`Time It! — servidor online na porta ${PORT}`);
   console.log(`Protocolo v${PROTOCOL_VERSION} · contagem ${COUNTDOWN_MS}ms`);
 });
+
+/* Encerramento limpo: o Render envia SIGTERM ao reiniciar ou hibernar.
+   Sem tratar, o processo pode ser morto no meio de um deploy e o serviço
+   fica alguns segundos sem instância viva. */
+const shutdown = () => {
+  console.log('encerrando...');
+  wss.clients.forEach((socket) => socket.close(1001, 'servidor reiniciando'));
+  http.close(() => process.exit(0));
+  // Se algo travar, não deixa o processo pendurado.
+  setTimeout(() => process.exit(0), 5000).unref();
+};
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
