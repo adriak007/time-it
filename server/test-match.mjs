@@ -152,7 +152,7 @@ ana.send({ type: 'start' });
 await ana.until((_, s) => s?.phase === 'round_intro', 5000, 'intro da rodada');
 check(ana.state.phase === 'round_intro', 'partida entra na intro');
 check(typeof ana.state.targetMs === 'number', 'alvo é definido');
-check(ana.state.startsAt > Date.now(), 'largada é agendada no futuro');
+check(ana.state.startsInMs > 0, 'contagem regressiva enviada como duração');
 await bruno.until((_, s) => s?.phase === 'round_intro', 5000, 'BRUNO ver a intro');
 check(
   bruno.state.targetMs === ana.state.targetMs,
@@ -218,7 +218,10 @@ log('\n=== 7. Reconexão ===');
 const brunoToken = bruno.token;
 bruno.close();
 await sleep(500);
-await ana.until((_, s) => s?.players.some((p) => !p.connected), 5000, 'ver desconexão');
+// Localmente a queda chega em ~1s; contra um servidor hospedado, o socket
+// leva mais tempo para ser reconhecido como fechado. Janela generosa para o
+// teste funcionar nos dois casos.
+await ana.until((_, s) => s?.players.some((p) => !p.connected), 30000, 'ver desconexão');
 check(
   ana.state.players.find((p) => p.id === 2)?.connected === false,
   'queda é sinalizada aos outros',

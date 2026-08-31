@@ -71,8 +71,15 @@ export interface RoomState {
   submitted: PlayerId[];
   /** Resultados da rodada, preenchidos quando todos terminam. */
   results: ScoredAttempt[] | null;
-  /** Instante (epoch ms do servidor) em que a contagem regressiva termina. */
-  startsAt: number | null;
+  /**
+   * Quanto FALTA (em ms) para a contagem terminar e os botões liberarem.
+   *
+   * Deliberadamente uma duração relativa, e não um horário absoluto: o
+   * relógio do servidor e o do celular podem estar segundos de diferença
+   * (medi ~6,6s num servidor hospedado), o que faria o app calcular uma
+   * largada no passado. Uma duração é imune a isso.
+   */
+  startsInMs: number | null;
 }
 
 /* ------------------------------------------------------------------ */

@@ -91,7 +91,10 @@ export const OnlineGamePage = ({ room, myId, onLeave }: OnlineGamePageProps) => 
           roundNumber={room.roundIndex + 1}
           totalRounds={room.config.rounds === 'endless' ? '∞' : String(room.config.rounds)}
           targetMs={room.targetMs}
-          // O servidor decide quando libera; aqui a contagem é só visual.
+          // A contagem aqui é puramente visual: quem libera os botões é o
+          // servidor, ao mudar a fase para 'playing'. Assim todos começam no
+          // mesmo instante real, sem depender do relógio de cada aparelho —
+          // `startsInMs` chega como duração justamente por isso.
           onComplete={() => undefined}
         />
       </Screen>

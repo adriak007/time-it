@@ -347,7 +347,9 @@ export class Room {
       targetMs: this.phase === 'lobby' ? null : this.targetMs,
       submitted: this.submittedIds,
       results: this.results,
-      startsAt: this.startsAt,
+      // Convertido para duração no momento do envio: cada cliente recebe
+      // "faltam N ms", que vale independentemente do relógio dele.
+      startsInMs: this.startsAt == null ? null : Math.max(0, this.startsAt - Date.now()),
     };
   }
 }
