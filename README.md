@@ -122,8 +122,10 @@ Dois a quatro jogadores, cada um no seu celular, em qualquer lugar. Quem cria a
 sala recebe um código de 4 letras (ex.: `BUCK`) e os outros entram com ele.
 
 **O modo online precisa de um servidor.** Ele está pronto em [`server/`](server/)
-e sobe de graça em ~10 minutos — o passo a passo está em
-[`server/DEPLOY.md`](server/DEPLOY.md).
+e o repositório já traz um [`render.yaml`](render.yaml): no Render basta criar
+um *Blueprint* apontando para este repo e clicar em Apply. Passo a passo
+completo em [`server/DEPLOY.md`](server/DEPLOY.md) — leva ~5 minutos e é
+gratuito.
 
 Enquanto não houver servidor configurado, o botão ONLINE mostra um aviso
 explicando o que falta, em vez de tentar uma conexão que não vai completar.
@@ -144,14 +146,26 @@ mesma fórmula do modo offline e define a ordem.
 
 ### Configuração
 
-O endereço do servidor vem de `VITE_ONLINE_URL`, no `.env` da raiz:
+Depois de hospedar (veja [`server/DEPLOY.md`](server/DEPLOY.md)), aponte o
+jogo para o servidor com um comando:
 
-```properties
-VITE_ONLINE_URL=wss://seu-servidor.onrender.com
+```bash
+npm run set-server https://timeit-server.onrender.com
+npm run android:apk
 ```
 
-Use sempre `wss://` (seguro): o Android bloqueia tráfego não criptografado
-desde a versão 9, então `ws://` não conecta no celular.
+O script converte o endereço para `wss://`, **verifica se o servidor responde
+antes de gravar** e recusa endereços inseguros — o Android bloqueia tráfego
+não criptografado desde a versão 9, então `ws://` não conecta no celular.
+
+Para voltar ao servidor local: `npm run set-server local`.
+
+### Rodar o servidor localmente
+
+```bash
+npm run server        # sobe o servidor em localhost:8787
+npm run server:test   # teste de integração com 3 jogadores
+```
 
 ### Testes do servidor
 
