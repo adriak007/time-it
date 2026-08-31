@@ -55,7 +55,7 @@ export const OnlineGameOverPage = ({
   }, []);
 
   return (
-    <Screen>
+    <Screen width="wide">
       {!reduceMotion && iWon && <Confetti pieces={34} />}
 
       <div className="flex flex-1 flex-col gap-5 overflow-y-auto px-6 pt-8 pb-4">

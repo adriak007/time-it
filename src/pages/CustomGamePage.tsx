@@ -90,7 +90,7 @@ export const CustomGamePage = ({ initial, onStart, onBack }: CustomGamePageProps
 
       {/* min-h-0 lets this flex child actually scroll; the trailing padding
           keeps the last card clear of the fixed START MATCH bar. */}
-      <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 pb-8">
+      <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 pb-14">
         <Card className="flex flex-col gap-3">
           <Label>{T.custom.players}</Label>
           <OptionRow

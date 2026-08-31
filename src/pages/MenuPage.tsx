@@ -20,16 +20,23 @@ export const MenuPage = ({
   onStats,
   onSettings,
 }: MenuPageProps) => (
-  <Screen className="relative overflow-hidden">
+  <Screen className="relative">
     {/* Bolha decorativa: um respingo de cor no fundo branco. Estática —
-        nada aqui pode sugerir passagem de tempo. */}
+        nada aqui pode sugerir passagem de tempo.
+
+        `fixed` em vez de `absolute`: dentro do palco de largura limitada do
+        desktop ela era recortada num retângulo, com bordas visíveis. */}
     <div
       aria-hidden
-      className="pointer-events-none absolute -top-[22%] left-1/2 h-[70vmin] w-[70vmin] -translate-x-1/2 rounded-full"
+      className="pointer-events-none fixed -top-[28vmin] left-1/2 -z-10 h-[70vmin] w-[70vmin] -translate-x-1/2 rounded-full"
       style={{ background: 'var(--color-brand)', opacity: 0.07 }}
     />
 
-    <div className="relative flex flex-1 flex-col items-center justify-center gap-2 px-7">
+    {/* No celular o `flex-1` empurra a marca para cima e os botões para o
+        rodapé, que é o certo para o polegar. Numa tela alta de PC isso abre
+        um vazio no meio, então o bloco todo se agrupa e centraliza:
+        `justify-center` com margem automática no grupo de baixo. */}
+    <div className="relative flex flex-1 flex-col items-center justify-center gap-2 px-7 pt-6">
       <div className="anim-fade-up flex flex-col items-center text-center">
         <Wordmark size="xl" />
         <p className="mt-5 max-w-[15rem] text-sm leading-relaxed text-ink-soft">
@@ -38,7 +45,7 @@ export const MenuPage = ({
       </div>
     </div>
 
-    <div className="relative flex flex-col gap-3 px-7 pb-8">
+    <div className="relative flex flex-col gap-3 px-7 pb-8 [@media(pointer:fine)]:mt-auto [@media(pointer:fine)]:pb-10">
       <Button size="lg" onClick={onQuickPlay} className="anim-fade-up w-full">
         {T.menu.play}
       </Button>

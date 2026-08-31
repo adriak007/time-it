@@ -56,6 +56,12 @@ export const T = {
     interruptedBody:
       'O app perdeu o foco enquanto o cronômetro rodava, então essa tentativa foi anulada.',
     retry: 'TENTAR DE NOVO',
+    /* Dicas de teclado — aparecem só no desktop. */
+    keyHintStart: 'ou aperte',
+    keySpace: 'ESPAÇO',
+    /* Variantes para quem joga com mouse: "toque" não descreve um clique. */
+    clickToStart: 'CLIQUE PARA\nCOMEÇAR',
+    clickToStop: 'CLIQUE PARA\nPARAR',
   },
 
   /* ---------------------------------------------------------------- */

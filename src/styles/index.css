@@ -289,3 +289,56 @@ input[type='range']::-moz-range-track {
   border-radius: 999px;
   background: var(--color-surface-3);
 }
+
+/* ==================================================================
+   DESKTOP
+   Ajustes que valem só onde existe mouse/teclado. `pointer: fine`
+   distingue com precisão de um toque de dedo — melhor que largura de
+   tela, que confunde tablet com notebook.
+   ================================================================== */
+
+/* Dicas de teclado: escondidas no celular, onde não fazem sentido. */
+.desktop-only {
+  display: none;
+}
+
+@media (pointer: fine) {
+  .desktop-only {
+    display: revert;
+  }
+
+  /* Feedback de hover só para quem tem cursor. */
+  button:not(:disabled):hover {
+    filter: brightness(1.04);
+  }
+}
+
+/* Rótulo do botão: "toque" no celular, "clique" onde há mouse. */
+.pointer-copy {
+  display: none;
+}
+
+@media (pointer: fine) {
+  .touch-copy {
+    display: none;
+  }
+  .pointer-copy {
+    display: inline;
+  }
+}
+
+/* Tecla desenhada como um "keycap", para a dica ler como atalho. */
+.keycap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.6rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.5rem;
+  background: var(--color-surface-2);
+  box-shadow: 0 2px 0 var(--color-surface-3);
+  font-weight: 900;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-soft);
+}

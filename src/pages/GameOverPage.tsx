@@ -38,7 +38,7 @@ export const GameOverPage = ({
   ).length;
 
   return (
-    <Screen>
+    <Screen width="wide">
       {!reduceMotion && <Confetti pieces={34} />}
 
       <div

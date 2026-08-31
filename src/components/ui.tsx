@@ -6,23 +6,46 @@ import { hapticUI } from '../services/haptics';
 /* Screen scaffold — applies safe-area padding on every page.          */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Moldura de todas as telas.
+ *
+ * No celular ocupa tudo, como antes. No desktop, o conteúdo fica num "palco"
+ * centralizado com largura máxima: esticar uma interface pensada para o
+ * polegar até 1920px deixa botões enormes com texto minúsculo no meio.
+ *
+ * O limite é aplicado num wrapper interno, e não no elemento raiz, para que o
+ * fundo continue preenchendo a janela inteira.
+ */
 export const Screen = ({
   children,
   className = '',
+  /** Largura do palco no desktop. 'wide' para telas com listas/cartões. */
+  width = 'default',
 }: {
   children: ReactNode;
   className?: string;
+  width?: 'default' | 'wide';
 }) => (
-  <div
-    className={`flex h-full w-full flex-col ${className}`}
-    style={{
-      paddingTop: 'var(--safe-top)',
-      paddingBottom: 'var(--safe-bottom)',
-      paddingLeft: 'var(--safe-left)',
-      paddingRight: 'var(--safe-right)',
-    }}
-  >
-    {children}
+  <div className="flex h-full w-full items-center justify-center">
+    <div
+      className={[
+        'flex h-full w-full flex-col',
+        width === 'wide' ? 'max-w-[46rem]' : 'max-w-[30rem]',
+        // Num monitor alto, uma coluna de 1080px de altura fica esticada e
+        // vazia. O teto dá ao jogo proporção de aplicativo, centralizado.
+        // Só vale onde há mouse: no celular a tela é sempre preenchida.
+        '[@media(pointer:fine)]:max-h-[52rem]',
+        className,
+      ].join(' ')}
+      style={{
+        paddingTop: 'var(--safe-top)',
+        paddingBottom: 'var(--safe-bottom)',
+        paddingLeft: 'var(--safe-left)',
+        paddingRight: 'var(--safe-right)',
+      }}
+    >
+      {children}
+    </div>
   </div>
 );
 

@@ -25,6 +25,13 @@ const COPY: Record<AttemptStatus, string> = {
   invalid: T.game.void,
 };
 
+/** Mesma coisa, para quem joga com mouse. */
+const COPY_POINTER: Record<AttemptStatus, string> = {
+  ...COPY,
+  idle: T.game.clickToStart,
+  running: T.game.clickToStop,
+};
+
 /**
  * The signature control of Time It!
  *
@@ -124,7 +131,13 @@ export const TapButton = memo(function TapButton({
         ? 'text-[clamp(1.1rem,4.6vmin,2rem)]'
         : 'text-[clamp(0.9rem,3.4vmin,1.5rem)]';
 
-  const diameter = showLabel ? 'min(98cqw, 86cqh)' : 'min(94cqw, 94cqh)';
+  // Teto absoluto além das medidas de container: num monitor grande, 94% da
+  // altura vira um círculo de mais de 900px — desproporcional e sem graça.
+  // No celular o limite nunca é atingido, então nada muda lá.
+  const maxDiameter = showLabel ? '20rem' : '26rem';
+  const diameter = showLabel
+    ? `min(98cqw, 86cqh, ${maxDiameter})`
+    : `min(94cqw, 94cqh, ${maxDiameter})`;
 
   return (
     // Fluxo em coluna (rótulo acima do botão) em vez de posição absoluta:
@@ -184,10 +197,24 @@ export const TapButton = memo(function TapButton({
             outlineOffset: isRunning ? '-3px' : undefined,
           }}
         >
+          {/* As duas versões existem no DOM e o CSS escolhe qual mostrar
+              (`pointer: fine` = mouse). Sem JavaScript e sem re-render: o
+              rótulo não pode depender de estado durante uma tentativa. */}
           <span
             className={`whitespace-pre-line px-3 text-center leading-[1.1] font-black tracking-tight ${fontSize}`}
           >
-            {isDone ? (status === 'invalid' ? T.game.void : '✓') : COPY[status]}
+            {isDone ? (
+              status === 'invalid' ? (
+                T.game.void
+              ) : (
+                '✓'
+              )
+            ) : (
+              <>
+                <span className="touch-copy">{COPY[status]}</span>
+                <span className="pointer-copy">{COPY_POINTER[status]}</span>
+              </>
+            )}
           </span>
         </button>
       </div>

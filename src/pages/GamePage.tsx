@@ -331,7 +331,7 @@ export const GamePage = ({
   }
 
   return (
-    <Screen>
+    <Screen width="wide">
       {phase !== 'round_intro' && (
         <header className="flex items-center justify-between gap-3 px-5 pt-2 pb-1">
           <button
@@ -383,6 +383,14 @@ export const GamePage = ({
             locked={false}
             landscape={landscape}
           />
+
+          {/* Atalho de teclado: só aparece onde existe mouse/teclado, e só
+              no modo solo, que é o único com suporte a SPACE. */}
+          {soloMode && (
+            <p className="desktop-only pb-4 text-center text-xs font-bold text-ink-faint">
+              {T.game.keyHintStart} <span className="keycap">{T.game.keySpace}</span>
+            </p>
+          )}
         </>
       )}
 
