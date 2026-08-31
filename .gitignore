@@ -40,3 +40,4 @@ npm-debug.log*
 # Código espelhado do app (gerado por server/sync-shared.mjs)
 server/shared/
 server/dist/
+.vercel
