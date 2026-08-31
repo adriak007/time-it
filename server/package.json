@@ -1,0 +1,27 @@
+{
+  "name": "timeit-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Servidor de partidas online do Time It!",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node sync-shared.mjs && tsx watch src/index.ts",
+    "build": "node sync-shared.mjs && tsc -p tsconfig.json",
+    "start": "node dist/src/index.js",
+    "typecheck": "node sync-shared.mjs && tsc -p tsconfig.json --noEmit",
+    "sync": "node sync-shared.mjs",
+    "test": "node test-match.mjs"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/ws": "^8.5.13",
+    "tsx": "^4.19.2",
+    "typescript": "~6.0.2"
+  }
+}

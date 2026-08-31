@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Time It!</string>
+    <string name="title_activity_main">Time It!</string>
+    <string name="package_name">com.timeit.game</string>
+    <string name="custom_url_scheme">com.timeit.game</string>
+</resources>

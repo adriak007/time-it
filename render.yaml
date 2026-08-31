@@ -1,0 +1,35 @@
+# Blueprint do Render — https://render.com/docs/blueprint-spec
+#
+# COMO USAR (3 cliques):
+#   1. Entre em https://dashboard.render.com/blueprints
+#   2. Clique em "New Blueprint Instance" e escolha este repositório
+#   3. Clique em "Apply"
+#
+# O Render lê este arquivo e cria o servidor sozinho, com as configurações
+# certas. Ao terminar, copie o endereço que aparecer (algo como
+# https://timeit-server.onrender.com) e siga o passo 4 do server/DEPLOY.md.
+
+services:
+  - type: web
+    name: timeit-server
+    runtime: node
+    plan: free
+    region: oregon
+    # O servidor mora em server/, não na raiz do repositório.
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    # O Render checa este endereço para saber se o serviço subiu.
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+    # Só reconstrói quando o servidor muda; alterações no app não disparam
+    # um novo deploy à toa.
+    buildFilter:
+      paths:
+        - server/**
+        - src/types/**
+        - src/services/**
+        - src/config/**
+        - src/utils/**

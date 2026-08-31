@@ -1,0 +1,291 @@
+@import 'tailwindcss';
+
+/* ==================================================================
+   TIME IT! — DESIGN SYSTEM
+   Single source of truth for colour, type, radius and motion.
+   Components consume these tokens; no ad-hoc hex values elsewhere.
+   ================================================================== */
+
+@theme {
+  /* ================================================================
+     ESTILO HIPERCASUAL
+     Branco puro, cores saturadas e alegres, botões com profundidade
+     física (borda inferior sólida que some ao apertar).
+     ================================================================ */
+
+  /* --- Superfícies: branco de verdade ----------------------------- */
+  --color-on-brand: #ffffff;
+  --color-base: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-2: #f4f6f8;
+  --color-surface-3: #e8ecf0;
+  --color-line: #e2e8ee;
+
+  /* --- Verde da marca: vivo e divertido --------------------------- */
+  --color-brand: #22c55e;
+  --color-brand-bright: #4ade80;
+  --color-brand-dim: #16a34a;
+  /* Borda 3D: o mesmo verde bem mais escuro, virando a base do botão */
+  --color-brand-deep: #15803d;
+
+  /* --- Cores semânticas: saturadas, mas ainda legíveis ------------- */
+  --color-early: #3b9cf5;
+  --color-early-deep: #1d6fc0;
+  --color-late: #fb923c;
+  --color-late-deep: #d97213;
+  --color-gold: #fbbf24;
+  --color-gold-deep: #d19405;
+  --color-danger: #f87171;
+  --color-danger-deep: #dc4b4b;
+
+  /* --- Texto: cinza-azulado escuro, mais macio que preto puro ------ */
+  --color-ink: #1e2a35;
+  --color-ink-soft: #64748b;
+  --color-ink-faint: #94a3b8;
+
+  /* --- Cores dos jogadores: paleta de party game ------------------- */
+  --color-p1: #22c55e;
+  --color-p2: #3b9cf5;
+  --color-p3: #fb923c;
+  --color-p4: #a855f7;
+
+  /* --- Profundidade 3D -------------------------------------------- */
+  /* Altura da "parede" inferior dos botões em repouso. Ao apertar, o
+     botão desce essa mesma distância e a parede encolhe: é isso que dá
+     a sensação física de um botão de brinquedo. */
+  --lift-lg: 8px;
+  --lift-md: 6px;
+  --lift-sm: 4px;
+
+/* --- Type ------------------------------------------------------ */
+  /* Nunito: arredondada e simpática, com peso 900 de verdade — a cara
+     de jogo casual. Fallback para as fontes do sistema. */
+  --font-display: 'Nunito', ui-rounded, 'Segoe UI Rounded', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Nunito', ui-rounded, 'Segoe UI Rounded', system-ui, -apple-system, sans-serif;
+
+  /* --- Radius ---------------------------------------------------- */
+  --radius-card: 1.5rem;
+  --radius-btn: 1.25rem;
+
+  /* --- Motion ---------------------------------------------------- */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snap: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ==================================================================
+   BASE
+   ================================================================== */
+
+:root {
+  color-scheme: light;
+  /* Identidade clara fixa — o jogo não segue o tema do sistema. */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-base);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  /* Block pull-to-refresh and rubber-banding across the whole app. */
+  overscroll-behavior: none;
+}
+
+/* Numbers must never shift width as they change. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* Applied to <body> during a match: no scrolling, no selection, no zoom. */
+body.playing {
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Interactive surfaces never show the browser's text cursor or callout. */
+.no-touch-callout {
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Button/input normalisation.
+   These live in the `base` layer so utility classes (bg-*, border-*, p-*)
+   always win. Declared unlayered, they would sit after the utilities in the
+   stylesheet and silently kill every gradient and background on a <button>. */
+@layer base {
+  button {
+    font-family: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  input {
+    font-family: inherit;
+  }
+}
+
+/* Keyboard users get a clear ring; pointer users never see it. */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ==================================================================
+   ANIMATIONS
+   Every keyframe used while a timer is RUNNING must be temporally
+   neutral — no duration that reveals elapsed time.
+   ================================================================== */
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pop-in {
+  0%   { opacity: 0; transform: scale(0.82); }
+  60%  { opacity: 1; transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes count-in {
+  0%   { opacity: 0; transform: scale(1.5); }
+  30%  { opacity: 1; transform: scale(1); }
+  80%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.9); }
+}
+
+@keyframes flash-green {
+  0%   { opacity: 0; }
+  20%  { opacity: 0.55; }
+  100% { opacity: 0; }
+}
+
+@keyframes confetti-fall {
+  0%   { opacity: 1; transform: translate3d(0, -10vh, 0) rotate(0deg); }
+  100% { opacity: 0; transform: translate3d(var(--drift, 0px), 105vh, 0) rotate(var(--spin, 540deg)); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.anim-fade-up { animation: fade-up 0.42s var(--ease-out-soft) both; }
+.anim-fade-in { animation: fade-in 0.3s ease both; }
+.anim-pop     { animation: pop-in 0.44s var(--ease-snap) both; }
+
+/* ==================================================================
+   REDUCED MOTION
+   Honoured from the in-game setting (.reduce-motion on <html>) and
+   from the OS preference.
+   ================================================================== */
+
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ==================================================================
+   HIGH CONTRAST (optional accessibility setting)
+   ================================================================== */
+
+.high-contrast {
+  --color-base: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-2: #f0f2f1;
+  --color-surface-3: #e0e5e3;
+  --color-line: #6b7873;
+  --color-ink: #000000;
+  --color-ink-soft: #26302c;
+  --color-ink-faint: #3d4a45;
+  --color-brand: #0a7a3c;
+  --color-early: #05537f;
+  --color-late: #8a3d02;
+  --color-danger: #96271e;
+}
+
+/* ==================================================================
+   SLIDERS
+   O range nativo herda o preto do navegador; aqui ele vira parte da
+   identidade: trilha clara e polegar verde arredondado.
+   ================================================================== */
+
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--color-surface-3);
+  outline: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--color-brand);
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 0 var(--color-brand-deep);
+  cursor: pointer;
+}
+
+input[type='range']::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--color-brand);
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 0 var(--color-brand-deep);
+  cursor: pointer;
+}
+
+input[type='range']::-moz-range-track {
+  height: 12px;
+  border-radius: 999px;
+  background: var(--color-surface-3);
+}
