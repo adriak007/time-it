@@ -43,7 +43,7 @@ export const MenuPage = ({
         {T.menu.play}
       </Button>
 
-      <Button variant="secondary" onClick={onOnline} className="w-full">
+      <Button variant="accent" onClick={onOnline} className="w-full">
         {T.online.menuButton}
       </Button>
 

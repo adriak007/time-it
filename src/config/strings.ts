@@ -178,7 +178,7 @@ export const T = {
   /* ---------------------------------------------------------------- */
   online: {
     title: 'JOGAR ONLINE',
-    menuButton: 'ONLINE',
+    menuButton: 'JOGAR COM AMIGOS',
     yourName: 'SEU NOME',
     namePlaceholder: 'Seu apelido',
     create: 'CRIAR SALA',

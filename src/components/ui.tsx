@@ -30,7 +30,7 @@ export const Screen = ({
 /* Buttons                                                             */
 /* ------------------------------------------------------------------ */
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
+type ButtonVariant = 'primary' | 'accent' | 'secondary' | 'ghost' | 'danger';
 
 /** Cada variante é uma dupla: a tampa e a parede escura por baixo dela. */
 const VARIANTS: Record<ButtonVariant, { face: string; wall: string; text: string }> = {
@@ -38,6 +38,13 @@ const VARIANTS: Record<ButtonVariant, { face: string; wall: string; text: string
     face: 'var(--color-brand)',
     wall: 'var(--color-brand-deep)',
     text: 'var(--color-on-brand)',
+  },
+  /* Azul do jogador 2: destaca uma ação importante sem disputar atenção
+     com o verde do botão principal. */
+  accent: {
+    face: 'var(--color-early)',
+    wall: 'var(--color-early-deep)',
+    text: '#ffffff',
   },
   secondary: {
     face: 'var(--color-surface-2)',
